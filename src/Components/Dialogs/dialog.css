@@ -1,0 +1,98 @@
+.dialog {
+  border: 1px solid #cccccc;
+  font-size: 12px;
+  height: fit-content;
+  z-index: 2;
+}
+
+.dialog:focus,
+.dialog:focus-visible,
+select:focus {
+  outline: none;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialogContainer {
+  padding: 1rem 2rem;
+  width: 40%;
+
+  & label {
+    font-size: 14px;
+  }
+
+  & select {
+    margin-left: 2rem;
+  }
+}
+
+div.settingsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  & label {
+    display: inline-block;
+    width: 10rem;
+  }
+}
+
+div.closer {
+  align-content: right;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: end;
+  margin-top: 2rem;
+
+  & span {
+    padding: 0 2rem;
+  }
+
+  & button {
+    font-size: 16px;
+    height: 2rem;
+    width: fit-content;  
+  }
+}
+
+button.cancel {
+  background-color: #333333;
+  
+  &:hover {
+    background-color: #444444;
+  }
+}
+
+button.closer {
+  background-color: #336633;
+  
+  &:hover {
+    background-color: #447744;
+  }
+}
+
+.settingsMenuContainer {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+
+  & :hover {
+    cursor: pointer;
+  }
+
+  & ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0.25rem;
+
+    & li {
+      padding: 0.75rem;
+
+      &:hover {
+        background-color: #444444;
+      }
+    }
+  }
+}

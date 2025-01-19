@@ -1,0 +1,46 @@
+div.contentsContainer {
+  align-self: flex-end;
+  padding: 0.5rem;
+  text-align: right;
+}
+
+div.entryContainer {
+  border-top: 1px solid #999999;
+  padding: 0.2rem 0.5rem;
+  text-align: right;
+}
+
+div.settingsContainer {
+  align-items: center;
+  border-bottom: 1px solid #999999;
+  display: grid;
+  font-size: 0.8rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 2px;
+  padding: 0.2rem 0.5rem;
+
+  &:hover {
+    background-color: #444444;
+    cursor: pointer;
+  }
+
+  & div.settingsDisplay {
+    justify-self: flex-end;
+  }
+
+  & div.settingsTrig {
+    justify-self: flex-start;
+  }
+}
+
+div.stackContainer {
+  display: grid;
+  font-family: "PT Mono", monospace;
+  font-size: max(calc(1vh * 3), 1rem);
+  font-weight: 600;
+  grid-template-rows: max(calc(1vh * 6), 1.5rem) auto max(calc(1vh * 6), 1.5rem);
+  grid-column: 1 / 4;
+  grid-row: 1 / 8;
+  height: 100%;
+  line-height: 1.43;
+}

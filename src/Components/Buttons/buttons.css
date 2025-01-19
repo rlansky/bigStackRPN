@@ -1,0 +1,107 @@
+div.layout {
+  grid-column: var(--col);
+  grid-row: var(--row);
+}
+
+button {
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  text-align: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  border-image: initial;
+  border-radius: 0.2em;
+  display: inline-block;
+  font-size: max(calc(1vh * 4), 1rem);
+  line-height: 0;
+  font-weight: 600;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: bottom;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding-bottom: var(--paddingBottom);
+  border-color: #222222;
+  border-bottom-color: #111111;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: rotate(-19deg) translateY(-1.3em) scale(1.05);
+    filter: blur(1px);
+    background-image: linear-gradient(
+      -90deg,
+      rgba(255, 255, 255, 0.12) 20%,
+      rgba(255, 255, 255, 0)
+    );
+  }
+}
+
+button.dark {
+  background-color: #333333;
+  box-shadow: 0 1px 1px -1px rgba(255, 255, 255, 0.9) inset,
+    0 40px 20px -20px rgba(255, 255, 255, 0.15) inset,
+    0 -1px 1px -1px rgba(0, 0, 0, 0.7) inset,
+    0 -40px 20px -20px rgba(0, 0, 0, 0.06) inset,
+    0 9px 8px -4px rgba(0, 0, 0, 0.4), 0 2px 1px -1px rgba(0, 0, 0, 0.3),
+    7px 7px 8px -4px rgba(0, 0, 0, 0.1), -7px 7px 8px -4px rgba(0, 0, 0, 0.1),
+    0 -4px 12px 2px rgba(74, 79, 95, 0.2);
+  color: #ffffff;
+
+  &:hover {
+    background-color: #444444;
+  }
+
+  &:active {
+    box-shadow: 0 -1px 1px -1px rgba(255, 255, 255, 0.4) inset,
+      0 -40px 20px -20px rgba(255, 255, 255, 0.1) inset,
+      0 1px 1px -1px rgba(0, 0, 0, 0.7) inset,
+      0 40px 20px -20px rgba(0, 0, 0, 0.06) inset,
+      0 7px 8px -4px rgba(0, 0, 0, 0.4), 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+      7px 7px 8px -4px rgba(0, 0, 0, 0.05),
+      -7px 7px 8px -4px rgba(0, 0, 0, 0.05),
+      0 -4px 12px 2px rgba(74, 79, 95, 0.1);
+    background-color: #222222;
+  }
+}
+
+button.light {
+  background-color: #bbbbbb;
+  box-shadow: 0 1px 1px -1px rgba(255, 255, 255, 0.9) inset,
+    0 40px 20px -20px rgba(255, 255, 255, 0.15) inset,
+    0 -1px 1px -1px rgba(0, 0, 0, 0.7) inset,
+    0 -40px 20px -20px rgba(0, 0, 0, 0.06) inset,
+    0 9px 8px -4px rgba(0, 0, 0, 0.4), 0 2px 1px -1px rgba(0, 0, 0, 0.3),
+    7px 7px 8px -4px rgba(0, 0, 0, 0.1), -7px 7px 8px -4px rgba(0, 0, 0, 0.1),
+    0 -4px 12px 2px rgba(246, 247, 249, 0.2);
+  color: #000000;
+
+  &:hover {
+    background-color: #cccccc;
+  }
+
+  &:active {
+    box-shadow: 0 -1px 1px -1px rgba(255, 255, 255, 0.4) inset,
+      0 -40px 20px -20px rgba(255, 255, 255, 0.1) inset,
+      0 1px 1px -1px rgba(0, 0, 0, 0.7) inset,
+      0 40px 20px -20px rgba(0, 0, 0, 0.06) inset,
+      0 7px 8px -4px rgba(0, 0, 0, 0.4), 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+      7px 7px 8px -4px rgba(0, 0, 0, 0.05),
+      -7px 7px 8px -4px rgba(0, 0, 0, 0.05),
+      0 -4px 12px 2px rgba(246, 247, 249, 0.1);
+    background-color: #dddddd;
+  }
+}
