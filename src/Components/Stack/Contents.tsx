@@ -31,27 +31,30 @@ const renderNumber = (
 //  Figure out how many rows we can actually show in the stack.
 const calcHiddenRowCount = (
   stackLength: number,
-  windowHeight: number
+  windowHeight: number,
+  isLandscape: boolean
 ): number => {
-  //  These values are based on CSS (somewhat brittle as a result)
-  const lineHeight = 1.43;
-  const rem = 16;
+  //  These values are based on CSS
+  const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const targetLineHeight = 1.43;
   const vh = windowHeight * 0.01;
+
   const fontSize = Math.max(3 * vh, rem);
   const entryAndSettingsHeight = Math.max(6 * vh, 1.5 * rem);
-  const heightOfEntireStack = (vh * 100 * 7) / 9; //  Has 7/9 of the screen
+  const stackPortionOfScreen = isLandscape ? 7.0 / 9.0 : 3.0 / 8.0;
+  const heightOfEntireStack = vh * 100 * stackPortionOfScreen;
 
   const stackHeight = heightOfEntireStack - 2 * entryAndSettingsHeight - rem;
-  const numRows = Math.floor(stackHeight / (fontSize * lineHeight));
+  const numRows = Math.floor(stackHeight / (fontSize * targetLineHeight));
   return Math.max(stackLength - numRows, 0);
 };
 
 export function StackContents() {
   const { dispSize, dispMode } = useContext(SettingsContext);
   const { currentStack } = useContext(GlobalContext);
-  const { height } = useContext(WindowContext);
+  const { height, isLandscape } = useContext(WindowContext);
 
-  const rowsToHide = calcHiddenRowCount(currentStack.value.length, height);
+  const rowsToHide = calcHiddenRowCount( currentStack.value.length, height, isLandscape );
 
   return (
     <div class="contentsContainer">

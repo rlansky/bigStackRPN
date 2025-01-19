@@ -32,7 +32,7 @@ export const WindowProvider = ({ children }) => {
       window.removeEventListener("resize", onWindowChange);
       window.removeEventListener("orientationchange", onWindowChange);
     };
-  }, []);
+  }, [isLandscape]);
 
   return (
     <WindowContext.Provider value={{ height, isLandscape }}>

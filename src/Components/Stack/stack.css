@@ -44,3 +44,10 @@ div.stackContainer {
   height: 100%;
   line-height: 1.43;
 }
+
+@media (orientation: portrait) {
+  div.stackContainer {
+    grid-column: 1 / 4;
+    grid-row: 1 / 4;
+  }
+}

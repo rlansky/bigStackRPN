@@ -96,3 +96,9 @@ button.closer {
     }
   }
 }
+
+@media (orientation: portrait) {
+  .dialogContainer {
+    width: 80%;
+  }
+}
