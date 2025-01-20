@@ -67,8 +67,9 @@ export function SettingsDialog() {
       <select id="trigMode" ref={trigRef}>
         {trigOptions.map((opt) => (
           <option
-            value={opt.value}
+            key={opt.value}
             selected={settingsContext.trigMode == opt.value}
+            value={opt.value}
           >
             {opt.label}
           </option>
@@ -83,8 +84,9 @@ export function SettingsDialog() {
       <select id="displayMode" ref={displayRef}>
         {displayOptions.map((opt) => (
           <option
-            value={opt.value}
+            key={opt.value}
             selected={settingsContext.dispMode == opt.value}
+            value={opt.value}
           >
             {opt.label}
           </option>
@@ -99,8 +101,9 @@ export function SettingsDialog() {
       <select id="prec" ref={sizeRef}>
         {sizeOptions.map((opt) => (
           <option
-            value={String(opt)}
+            key={opt}
             selected={settingsContext.dispSize == Number(opt)}
+            value={String(opt)}
           >
             {opt}
           </option>

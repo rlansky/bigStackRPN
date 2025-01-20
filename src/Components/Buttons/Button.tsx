@@ -1,9 +1,9 @@
 import { useContext } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
-import * as Types from "../../types";
+import { ButtonProps } from "../../types";
 import { EntryContext } from "../../providers/EntryProvider";
 
-interface ComponentProps extends Types.ButtonProps {
+interface ComponentProps extends ButtonProps {
   col: number | string;
   row: number | string;
 }
@@ -19,7 +19,7 @@ export function Button({
 }: ComponentProps) {
   const hasSuperscript = Boolean(superscript);
   const { onKeyPress } = useContext(EntryContext);
-  
+
   let content: string | JSX.Element;
   if (hasSuperscript) {
     content = (

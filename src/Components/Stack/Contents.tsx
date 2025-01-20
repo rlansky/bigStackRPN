@@ -4,11 +4,7 @@ import { GlobalContext } from "../../providers/GlobalStateProvider";
 import { WindowContext } from "../../providers/WindowProvider";
 import * as Types from "../../types";
 
-const renderNumber = (
-  val: number,
-  dispSize: number,
-  dispMode: string
-): string => {
+function renderNumber(val: number, dispSize: number, dispMode: string): string {
   if (!Number.isFinite(val)) {
     return String(val);
   }
@@ -26,7 +22,7 @@ const renderNumber = (
     default:
       return String(val);
   }
-};
+}
 
 //  Figure out how many rows we can actually show in the stack.
 const calcHiddenRowCount = (
@@ -54,7 +50,11 @@ export function StackContents() {
   const { currentStack } = useContext(GlobalContext);
   const { height, isLandscape } = useContext(WindowContext);
 
-  const rowsToHide = calcHiddenRowCount( currentStack.value.length, height, isLandscape );
+  const rowsToHide = calcHiddenRowCount(
+    currentStack.value.length,
+    height,
+    isLandscape
+  );
 
   return (
     <div class="contentsContainer">

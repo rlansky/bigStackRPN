@@ -1,4 +1,3 @@
-import { useEffect } from "preact/hooks";
 import { createContext } from "preact";
 import { GlobalContext } from "./GlobalStateProvider";
 import { StackContext } from "./StackProvider";

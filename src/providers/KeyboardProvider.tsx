@@ -62,7 +62,7 @@ export const KeyboardProvider = ({ children }) => {
     return () => {
       window.removeEventListener("keydown", onKeyboardDown);
     };
-  }, []);
+  }, [onKeyboardDown]);
 
   return (
     <KeyboardContext.Provider value={null}>{children}</KeyboardContext.Provider>
