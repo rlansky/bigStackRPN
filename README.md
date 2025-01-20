@@ -1,15 +1,4 @@
-# `create-preact`
+# `BigStack - an RPN Calculator`
 
-<h2 align="center">
-  <img height="256" width="256" src="./src/assets/preact.svg">
-</h2>
 
-<h3 align="center">Get started using Preact and Vite!</h3>
-
-## Getting Started
-
--   `npm run dev` - Starts a dev server at http://localhost:5173/
-
--   `npm run build` - Builds for production, emitting to `dist/`
-
--   `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+<p>An [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator. Built as a progressive web app [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) with the intention that it be installed on a phone or mobile device. Works great on the desktop as well.</p>
