@@ -1,6 +1,5 @@
 {
  "display": "standalone",
- "orientation": "landscape",
  "start_url": "/",
  "theme_color": "#FFFFFF",
  "background_color": "#000000",
