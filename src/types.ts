@@ -77,7 +77,7 @@ export const BUTTONS: { [key: string]: ButtonProps } = {
     value: "cube_root",
   },
   DELETE: { label: "⌫", value: "del" },
-  DELETE_ALL: { label: "🗑", value: "del_all" },
+  DELETE_ALL: { label: "⎚", value: "del_all" },
   DELTA_PERCENT: { label: "Δ%", value: "delta_percent" },
   DIVIDE: { label: "/", value: "div" },
   E: { label: "e", value: "e_val" },
