@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { createContext } from "preact";
-import debounce from "lodash.debounce";
+import { debounce } from "../utils/debounce";
 import * as Types from "../types";
 
 export const WindowContext = createContext<Types.WindowContext | null>(null);
@@ -20,7 +20,7 @@ export const WindowProvider = ({ children }) => {
       }
     },
     100,
-    { maxWait: 1000 }
+    1000
   );
 
   useEffect(() => {
