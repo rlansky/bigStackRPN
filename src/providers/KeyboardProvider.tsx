@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "preact/hooks";
+import { useContext, useEffect, useCallback } from "preact/hooks";
 import { createContext } from "preact";
 import { EntryContext } from "./EntryProvider";
 import { GlobalContext } from "./GlobalStateProvider";
@@ -29,7 +29,7 @@ export const KeyboardProvider = ({ children }) => {
   const { entry } = useContext(GlobalContext);
 
   //  Listens for certain keypress and simulates the equivilant button press in the application
-  const onKeyboardDown = (event) => {
+  const onKeyboardDown = useCallback((event) => {
     const { key } = event;
     let keyUsed = false;
 
@@ -54,7 +54,7 @@ export const KeyboardProvider = ({ children }) => {
       event.stopPropagation();
       event.preventDefault();
     }
-  };
+  }, [entry, onKeyPress]);
 
   useEffect(() => {
     window.addEventListener("keydown", onKeyboardDown);

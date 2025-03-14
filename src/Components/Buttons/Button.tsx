@@ -1,14 +1,14 @@
-import { useContext } from "preact/hooks";
-import { JSX } from "preact/jsx-runtime";
+import { useContext, useMemo, useCallback } from "preact/hooks";
 import { ButtonProps } from "../../types";
 import { EntryContext } from "../../providers/EntryProvider";
+import { memo } from "preact/compat";
 
 interface ComponentProps extends ButtonProps {
   col: number | string;
   row: number | string;
 }
 
-export function Button({
+function ButtonComponent({
   col,
   label,
   superscript,
@@ -20,25 +20,39 @@ export function Button({
   const hasSuperscript = Boolean(superscript);
   const { onKeyPress } = useContext(EntryContext);
 
-  let content: string | JSX.Element;
-  if (hasSuperscript) {
-    content = (
-      <span>
-        {superscriptShownFirst && <sup>{superscript}</sup>}
-        {label}
-        {!superscriptShownFirst && <sup>{superscript}</sup>}
-      </span>
-    );
-  } else {
-    content = label;
-  }
+  const content = useMemo(() => {
+    if (hasSuperscript) {
+      return (
+        <span>
+          {superscriptShownFirst && <sup>{superscript}</sup>}
+          {label}
+          {!superscriptShownFirst && <sup>{superscript}</sup>}
+        </span>
+      );
+    }
+    return label;
+  }, [hasSuperscript, superscript, superscriptShownFirst, label]);
+
+  const buttonStyle = useMemo(() => 
+    `--paddingBottom: ${hasSuperscript ? "8px" : "0"};`,
+    [hasSuperscript]
+  );
+
+  const layoutStyle = useMemo(() => 
+    `--col: ${col}; --row: ${row};`,
+    [col, row]
+  );
+
+  const handleClick = useCallback(() => {
+    onKeyPress(value);
+  }, [onKeyPress, value]);
 
   return (
-    <div class="layout" style={`--col: ${col}; --row: ${row};`}>
+    <div class="layout" style={layoutStyle}>
       <button
         class={`${type}`}
-        onClick={() => onKeyPress(value)}
-        style={`--paddingBottom: ${hasSuperscript ? "8px" : "0"};`}
+        onClick={handleClick}
+        style={buttonStyle}
         value={value}
       >
         {content}
@@ -46,3 +60,6 @@ export function Button({
     </div>
   );
 }
+
+// Use memo to prevent re-rendering when props haven't changed
+export const Button = memo(ButtonComponent);

@@ -1,4 +1,4 @@
-import { useContext } from "preact/hooks";
+import { useContext, useMemo } from "preact/hooks";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import { GlobalContext } from "../../providers/GlobalStateProvider";
 import { WindowContext } from "../../providers/WindowProvider";
@@ -50,19 +50,27 @@ export function StackContents() {
   const { currentStack } = useContext(GlobalContext);
   const { height, isLandscape } = useContext(WindowContext);
 
-  const rowsToHide = calcHiddenRowCount(
-    currentStack.value.length,
-    height,
-    isLandscape
+  const rowsToHide = useMemo(() => 
+    calcHiddenRowCount(
+      currentStack.value.length,
+      height,
+      isLandscape
+    ), 
+    [currentStack.value.length, height, isLandscape]
+  );
+
+  const stackItems = useMemo(() => 
+    currentStack.value.map((val, index) =>
+      index >= rowsToHide ? (
+        <div key={index}>{renderNumber(val, dispSize, dispMode)}</div>
+      ) : null
+    ),
+    [currentStack.value, rowsToHide, dispSize, dispMode]
   );
 
   return (
     <div class="contentsContainer">
-      {currentStack.value.map((val, index) =>
-        index >= rowsToHide ? (
-          <div key={index}>{renderNumber(val, dispSize, dispMode)}</div>
-        ) : null
-      )}
+      {stackItems}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useState, useCallback, useMemo } from "preact/hooks";
 import { createContext } from "preact";
 import * as Types from "../types";
 
@@ -13,37 +13,40 @@ export const SettingsProvider = ({ children }) => {
   const [dispSize, setDispSize] = useState<number>(Types.DISP_SIZES.FIVE);
   const [trigMode, setTrigMode] = useState<string>(Types.TRIG.DEGS);
 
-  const updateSettings = (
-    newTrigMode: string,
-    newDispSize: number,
-    newDispMode: string
-  ) => {
-    let updateHasHappened = false;
+  const updateSettings = useCallback(
+    (
+      newTrigMode: string,
+      newDispSize: number,
+      newDispMode: string
+    ) => {
+      let updateHasHappened = false;
 
-    if (newTrigMode !== trigMode) {
-      updateHasHappened = true;
-      setTrigMode(newTrigMode);
-    }
-    if (newDispSize !== dispSize) {
-      updateHasHappened = true;
-      setDispSize(newDispSize);
-    }
-    if (newDispMode !== dispMode) {
-      updateHasHappened = true;
-      setDispMode(newDispMode);
-    }
+      if (newTrigMode !== trigMode) {
+        updateHasHappened = true;
+        setTrigMode(newTrigMode);
+      }
+      if (newDispSize !== dispSize) {
+        updateHasHappened = true;
+        setDispSize(newDispSize);
+      }
+      if (newDispMode !== dispMode) {
+        updateHasHappened = true;
+        setDispMode(newDispMode);
+      }
 
-    if (updateHasHappened) {
-      window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          dispMode: newDispMode,
-          dispSize: newDispSize,
-          trigMode: newTrigMode,
-        })
-      );
-    }
-  };
+      if (updateHasHappened) {
+        window.localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            dispMode: newDispMode,
+            dispSize: newDispSize,
+            trigMode: newTrigMode,
+          })
+        );
+      }
+    },
+    [dispMode, dispSize, trigMode]
+  );
 
   //  Loads the previous settings, if any
   useEffect(() => {
@@ -56,15 +59,15 @@ export const SettingsProvider = ({ children }) => {
     }
   }, []);
 
+  const contextValue = useMemo(() => ({
+    dispMode,
+    dispSize,
+    trigMode,
+    updateSettings,
+  }), [dispMode, dispSize, trigMode, updateSettings]);
+
   return (
-    <SettingsContext.Provider
-      value={{
-        dispMode,
-        dispSize,
-        trigMode,
-        updateSettings,
-      }}
-    >
+    <SettingsContext.Provider value={contextValue}>
       {children}
     </SettingsContext.Provider>
   );

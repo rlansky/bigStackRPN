@@ -1,5 +1,6 @@
 import { signal, computed } from "@preact/signals";
 import { createContext } from "preact";
+import { useMemo } from "preact/hooks";
 import * as Types from "../types";
 
 function createGlobalState() {
@@ -28,8 +29,10 @@ function createGlobalState() {
 export const GlobalContext = createContext<Types.GlobalContext>(null);
 
 export const GlobalStateProvider = ({ children }) => {
+  const globalState = useMemo(() => createGlobalState(), []);
+  
   return (
-    <GlobalContext.Provider value={createGlobalState()}>
+    <GlobalContext.Provider value={globalState}>
       {children}
     </GlobalContext.Provider>
   );

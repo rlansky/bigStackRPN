@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "preact/hooks";
+import { useContext, useEffect, useCallback, useMemo } from "preact/hooks";
 import { createContext } from "preact";
 import { GlobalContext } from "./GlobalStateProvider";
 import * as Types from "../types";
@@ -11,7 +11,7 @@ const STORAGE_KEY = "bigStackState";
 export const StackProvider = ({ children }) => {
   const { currentStack, historicalStacks } = useContext(GlobalContext);
 
-  const update = (newStackEntry: number[]): void => {
+  const update = useCallback((newStackEntry: number[]): void => {
     const fullStack = historicalStacks.value.concat([newStackEntry]);
     if (fullStack.length > HISTORY_LIMIT) {
       fullStack.shift();
@@ -20,45 +20,45 @@ export const StackProvider = ({ children }) => {
     historicalStacks.value = fullStack;
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fullStack));
-  };
+  }, [historicalStacks]);
 
-  const clear = () => update([]);
+  const clear = useCallback(() => update([]), [update]);
 
-  const dupe = () => {
+  const dupe = useCallback(() => {
     const newStackEntry = [...currentStack.value];
     const len = newStackEntry.length;
     if (len) {
       update(newStackEntry.concat(newStackEntry[len - 1]));
     }
-  };
+  }, [currentStack, update]);
 
   //  Doesn't remove the entries
-  const fetch = (numEntries: number = 1): number[] => {
+  const fetch = useCallback((numEntries: number = 1): number[] => {
     const stack = currentStack.value;
     if (stack.length < numEntries) {
       throw Types.ERRORS.NOT_ENOUGH_ENTRIES;
     }
 
     return stack.slice(stack.length - numEntries);
-  };
+  }, [currentStack]);
 
-  const pop = (): number | undefined => {
+  const pop = useCallback((): number | undefined => {
     if (currentStack.value.length) {
       const newStackEntry = [...currentStack.value];
       const entry = newStackEntry.pop();
       update(newStackEntry);
       return entry;
     }
-  };
+  }, [currentStack, update]);
 
-  const push = (value: number) => {
+  const push = useCallback((value: number) => {
     const lastEntry = historicalStacks.value.length
       ? [...currentStack.value]
       : [];
     update(lastEntry.concat(value));
-  };
+  }, [currentStack, historicalStacks, update]);
 
-  const replace = (numEntries: number, newValues: number[] | number) => {
+  const replace = useCallback((numEntries: number, newValues: number[] | number) => {
     if (currentStack.value.length < numEntries) {
       throw Types.ERRORS.NOT_ENOUGH_ENTRIES;
     }
@@ -67,41 +67,41 @@ export const StackProvider = ({ children }) => {
       currentStack.value.length - numEntries
     );
     update(newEntry.concat(newValues));
-  };
+  }, [currentStack, update]);
 
-  const rotDown = () => {
+  const rotDown = useCallback(() => {
     if (currentStack.value.length > 1) {
       const newStackEntry = [...currentStack.value];
       const btm = newStackEntry.pop();
       newStackEntry.unshift(btm);
       update(newStackEntry);
     }
-  };
+  }, [currentStack, update]);
 
-  const rotUp = () => {
+  const rotUp = useCallback(() => {
     if (currentStack.value.length > 1) {
       const newStackEntry = [...currentStack.value];
       const top = newStackEntry.shift();
       update(newStackEntry.concat(top));
     }
-  };
+  }, [currentStack, update]);
 
-  const swap = () => {
+  const swap = useCallback(() => {
     if (currentStack.value.length > 1) {
       const newStackEntry = [...currentStack.value];
       const x = newStackEntry.pop();
       const y = newStackEntry.pop();
       update(newStackEntry.concat(x, y));
     }
-  };
+  }, [currentStack, update]);
 
-  const undo = () => {
+  const undo = useCallback(() => {
     if (historicalStacks.value.length) {
       const newStack = [...historicalStacks.value];
       newStack.pop();
       historicalStacks.value = newStack;
     }
-  };
+  }, [historicalStacks]);
 
   //  This loads the stack from their last usage when things start up
   useEffect(() => {
@@ -112,23 +112,23 @@ export const StackProvider = ({ children }) => {
         historicalStacks.value = parsedStack;
       }
     }
-  }, []);
+  }, [historicalStacks]);
+
+  const contextValue = useMemo(() => ({
+    clear,
+    dupe,
+    fetch,
+    pop,
+    push,
+    replace,
+    rotDown,
+    rotUp,
+    swap,
+    undo,
+  }), [clear, dupe, fetch, pop, push, replace, rotDown, rotUp, swap, undo]);
 
   return (
-    <StackContext.Provider
-      value={{
-        clear,
-        dupe,
-        fetch,
-        pop,
-        push,
-        replace,
-        rotDown,
-        rotUp,
-        swap,
-        undo,
-      }}
-    >
+    <StackContext.Provider value={contextValue}>
       {children}
     </StackContext.Provider>
   );

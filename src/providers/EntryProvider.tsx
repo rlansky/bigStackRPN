@@ -3,7 +3,7 @@ import { GlobalContext } from "./GlobalStateProvider";
 import { StackContext } from "./StackProvider";
 import { SettingsContext } from "./SettingsProvider";
 import * as Types from "../types";
-import { useContext } from "preact/hooks";
+import { useContext, useCallback, useMemo } from "preact/hooks";
 
 export const EntryContext = createContext<Types.EntryContext | null>(null);
 
@@ -15,7 +15,7 @@ export const EntryProvider = ({ children }) => {
   const stackCommands = useContext(StackContext);
   const { BUTTONS } = Types;
 
-  const addConstant = (value: number) => {
+  const addConstant = useCallback((value: number) => {
     if (entry.value !== "") {
       //  Since they were entering a number, we'll push that onto the stack as well
       stackCommands.replace(0, [parseFloat(entry.value), value]);
@@ -23,9 +23,9 @@ export const EntryProvider = ({ children }) => {
     } else {
       stackCommands.push(value);
     }
-  };
+  }, [entry, stackCommands]);
 
-  const performOperation = (numEntries: number, op: opFunc) => {
+  const performOperation = useCallback((numEntries: number, op: opFunc) => {
     try {
       let entries = [];
       if (entry.value !== "") {
@@ -47,31 +47,31 @@ export const EntryProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [entry, stackCommands]);
 
-  const performTrigOperation = (op: opFunc) => {
+  const performTrigOperation = useCallback((op: opFunc) => {
     performOperation(1, (x) =>
       op(trigMode === Types.TRIG.RADS ? x : (x / 180.0) * Math.PI)
     );
-  };
+  }, [performOperation, trigMode]);
 
-  const performInverseTrigOperation = (op: opFunc) => {
+  const performInverseTrigOperation = useCallback((op: opFunc) => {
     performOperation(
       1,
       (x) => op(x) * (trigMode === Types.TRIG.RADS ? 1.0 : 180.0 / Math.PI)
     );
-  };
+  }, [performOperation, trigMode]);
 
-  const deleteFromEntry = () => {
+  const deleteFromEntry = useCallback(() => {
     let newEntry = entry.value.slice(0, entry.value.length - 1);
     //  Don't leave a dangling minus sign
     if (newEntry[newEntry.length - 1] === "-") {
       newEntry = newEntry.slice(0, newEntry.length - 1);
     }
     entry.value = newEntry;
-  }
+  }, [entry]);
 
-  const onKeyPress = (pressedKey: string) => {
+  const onKeyPress = useCallback((pressedKey: string) => {
     if (Types.NUM_KEYS.includes(pressedKey)) {
       if (entry.value !== "0") {
         entry.value += pressedKey;
@@ -349,10 +349,16 @@ export const EntryProvider = ({ children }) => {
         break;
       }
     }
-  };
+  }, [
+    BUTTONS, Types.NUM_KEYS, addConstant, deleteFromEntry, 
+    entry, performOperation, performInverseTrigOperation, 
+    performTrigOperation, stackCommands
+  ]);
+
+  const contextValue = useMemo(() => ({ onKeyPress }), [onKeyPress]);
 
   return (
-    <EntryContext.Provider value={{ onKeyPress }}>
+    <EntryContext.Provider value={contextValue}>
       {children}
     </EntryContext.Provider>
   );
